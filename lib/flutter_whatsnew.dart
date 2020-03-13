@@ -41,8 +41,7 @@ class WhatsNewPage extends StatelessWidget {
   })  : changelog = true,
         items = null;
 
-  static void showDetailPopUp(
-      BuildContext context, String title, String detail) async {
+  static void showDetailPopUp(BuildContext context, String title, String detail) async {
     void showDemoDialog<T>({BuildContext context, Widget child}) {
       showDialog<T>(
         context: context,
@@ -81,8 +80,7 @@ class WhatsNewPage extends StatelessWidget {
   Widget _buildAndroid(BuildContext context) {
     if (changelog) {
       return Scaffold(
-        backgroundColor:
-            backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
+        backgroundColor: backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
         body: SafeArea(
           child: Stack(
             fit: StackFit.loose,
@@ -122,8 +120,7 @@ class WhatsNewPage extends StatelessWidget {
       );
     }
     return Scaffold(
-      backgroundColor:
-          backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Stack(
           fit: StackFit.loose,
@@ -162,9 +159,7 @@ class WhatsNewPage extends StatelessWidget {
                 title: RaisedButton(
                   child: buttonText,
                   color: buttonColor ?? Colors.blue,
-                  onPressed: onButtonPressed != null
-                      ? onButtonPressed
-                      : () => Navigator.pop(context),
+                  onPressed: onButtonPressed != null ? onButtonPressed : () => Navigator.pop(context),
                 ),
               ),
             ),
@@ -188,15 +183,6 @@ class WhatsNewPage extends StatelessWidget {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         middle: title,
-        automaticallyImplyMiddle: false,
-        trailing: CupertinoButton(
-          child: buttonText,
-          onPressed: onButtonPressed != null
-              ? onButtonPressed
-              : () {
-                  Navigator.pop(context);
-                },
-        ),
       ),
       child: SafeArea(
         child: child,
@@ -235,7 +221,11 @@ class _ChangeLogViewState extends State<ChangeLogView> {
   @override
   Widget build(BuildContext context) {
     if (_changelog == null) {
-      return CircularProgressIndicator();
+      if (Platform.isIOS) {
+        return Center(child: CupertinoActivityIndicator());
+      } else {
+        return Center(child: CircularProgressIndicator());
+      }
     }
     return Markdown(data: _changelog);
   }
