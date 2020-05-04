@@ -18,6 +18,7 @@ class WhatsNewPage extends StatelessWidget {
   final Color backgroundColor;
   final Color buttonColor;
   final String path;
+  final MarkdownTapLinkCallback onTapLink;
 
   const WhatsNewPage({
     @required this.items,
@@ -26,6 +27,7 @@ class WhatsNewPage extends StatelessWidget {
     this.onButtonPressed,
     this.backgroundColor,
     this.buttonColor,
+    this.onTapLink,
   })  : changelog = false,
         changes = null,
         path = null;
@@ -38,6 +40,7 @@ class WhatsNewPage extends StatelessWidget {
     this.backgroundColor,
     this.buttonColor,
     this.path,
+    this.onTapLink,
   })  : changelog = true,
         items = null;
 
@@ -98,7 +101,7 @@ class WhatsNewPage extends StatelessWidget {
                 right: 0.0,
                 top: 50.0,
                 bottom: 80.0,
-                child: ChangeLogView(changes: changes, path: path),
+                child: ChangeLogView(changes: changes, path: path, onTapLink: onTapLink),
               ),
               Positioned(
                 bottom: 5.0,
@@ -177,7 +180,7 @@ class WhatsNewPage extends StatelessWidget {
   Widget _buildIOS(BuildContext context) {
     Widget child;
     if (changelog) {
-      child = ChangeLogView(changes: changes, path: path);
+      child = ChangeLogView(changes: changes, path: path, onTapLink: onTapLink);
     } else {
       child = Material(
         child: ListView(
@@ -206,9 +209,10 @@ class WhatsNewPage extends StatelessWidget {
 }
 
 class ChangeLogView extends StatefulWidget {
-  const ChangeLogView({this.changes, this.path});
+  const ChangeLogView({this.changes, this.path, this.onTapLink});
   final String changes;
   final String path;
+  final MarkdownTapLinkCallback onTapLink;
   @override
   _ChangeLogViewState createState() => _ChangeLogViewState();
 }
@@ -237,6 +241,6 @@ class _ChangeLogViewState extends State<ChangeLogView> {
     if (_changelog == null) {
       return CircularProgressIndicator();
     }
-    return Markdown(data: _changelog);
+    return Markdown(data: _changelog, onTapLink: widget.onTapLink);
   }
 }
