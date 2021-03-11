@@ -11,18 +11,18 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 class WhatsNewPage extends StatelessWidget {
   final Widget title;
   final Widget buttonText;
-  final List<ListTile> items;
-  final VoidCallback onButtonPressed;
+  final List<ListTile>? items;
+  final VoidCallback? onButtonPressed;
   final bool changelog;
-  final String changes;
-  final Color backgroundColor;
-  final Color buttonColor;
-  final String path;
+  final String? changes;
+  final Color? backgroundColor;
+  final Color? buttonColor;
+  final String? path;
 
   const WhatsNewPage({
-    @required this.items,
-    @required this.title,
-    @required this.buttonText,
+    required this.items,
+    required this.title,
+    required this.buttonText,
     this.onButtonPressed,
     this.backgroundColor,
     this.buttonColor,
@@ -31,8 +31,8 @@ class WhatsNewPage extends StatelessWidget {
         path = null;
 
   const WhatsNewPage.changelog({
-    @required this.title,
-    @required this.buttonText,
+    required this.title,
+    required this.buttonText,
     this.onButtonPressed,
     this.changes,
     this.backgroundColor,
@@ -43,11 +43,11 @@ class WhatsNewPage extends StatelessWidget {
 
   static void showDetailPopUp(
       BuildContext context, String title, String detail) async {
-    void showDemoDialog<T>({BuildContext context, Widget child}) {
+    void showDemoDialog<T>({required BuildContext context, Widget? child}) {
       showDialog<T>(
         context: context,
         barrierDismissible: false,
-        builder: (BuildContext context) => child,
+        builder: (BuildContext context) => child!,
       );
     }
 
@@ -57,7 +57,7 @@ class WhatsNewPage extends StatelessWidget {
         title: Text(title),
         content: Text(detail),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text('OK'),
             onPressed: () {
               Navigator.pop(context);
@@ -105,9 +105,9 @@ class WhatsNewPage extends StatelessWidget {
                 right: 10.0,
                 left: 10.0,
                 child: ListTile(
-                  title: RaisedButton(
+                  title: ElevatedButton(
                     child: buttonText,
-                    color: buttonColor ?? Colors.blue,
+                    style: ElevatedButton.styleFrom(primary: buttonColor ?? Colors.blue),
                     onPressed: onButtonPressed != null
                         ? onButtonPressed
                         : () {
@@ -140,7 +140,7 @@ class WhatsNewPage extends StatelessWidget {
               top: 50.0,
               bottom: 80.0,
               child: ListView(
-                children: items
+                children: items!
                     .map(
                       (ListTile item) => ListTile(
                         title: item.title,
@@ -159,9 +159,9 @@ class WhatsNewPage extends StatelessWidget {
               right: 10.0,
               left: 10.0,
               child: ListTile(
-                title: RaisedButton(
+                title: ElevatedButton(
                   child: buttonText,
-                  color: buttonColor ?? Colors.blue,
+                  style: ElevatedButton.styleFrom(primary: buttonColor ?? Colors.blue),
                   onPressed: onButtonPressed != null
                       ? onButtonPressed
                       : () => Navigator.pop(context),
@@ -181,7 +181,7 @@ class WhatsNewPage extends StatelessWidget {
     } else {
       child = Material(
         child: ListView(
-          children: items,
+          children: items!,
         ),
       );
     }
@@ -207,19 +207,19 @@ class WhatsNewPage extends StatelessWidget {
 
 class ChangeLogView extends StatefulWidget {
   const ChangeLogView({this.changes, this.path});
-  final String changes;
-  final String path;
+  final String? changes;
+  final String? path;
   @override
   _ChangeLogViewState createState() => _ChangeLogViewState();
 }
 
 class _ChangeLogViewState extends State<ChangeLogView> {
-  String _changelog;
+  String? _changelog;
 
   @override
   void initState() {
-    if (widget?.changes == null) {
-      rootBundle.loadString(widget?.path ?? "CHANGELOG.md").then((data) {
+    if (widget.changes == null) {
+      rootBundle.loadString(widget.path ?? "CHANGELOG.md").then((data) {
         setState(() {
           _changelog = data;
         });
@@ -237,6 +237,6 @@ class _ChangeLogViewState extends State<ChangeLogView> {
     if (_changelog == null) {
       return CircularProgressIndicator();
     }
-    return Markdown(data: _changelog);
+    return Markdown(data: _changelog!);
   }
 }
