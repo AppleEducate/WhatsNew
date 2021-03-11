@@ -1,3 +1,8 @@
+## 2.0.0
+
+* Migrating to null safety
+* Update deprecated buttons (TextButton, RaisedButton)
+
 ## 1.0.3
 
 * Adding Web Support
